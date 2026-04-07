@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cab Allocation System</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    margin:0;
+    height:100vh;
+    background:linear-gradient(135deg,#1f2937,#111827);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#f9fafb;
+}
+
+.container{
+    background:#1f2937;
+    padding:30px;
+    border-radius:20px;
+    width:420px;
+    text-align:center;
+    box-shadow:0px 0px 30px rgba(0,0,0,0.6);
+}
+
+h1{
+    color:#22c55e;
+}
+
+input{
+    padding:12px;
+    width:85%;
+    border:none;
+    border-radius:8px;
+    margin:10px 0;
+    background:#374151;
+    color:white;
+}
+
+button{
+    padding:10px 15px;
+    margin:6px;
+    border:none;
+    border-radius:8px;
+    background:#22c55e;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#16a34a;
+    transform:scale(1.05);
+}
+
+ul{
+    list-style:none;
+    padding:0;
+}
+
+li{
+    background:#374151;
+    margin:6px;
+    padding:10px;
+    border-radius:8px;
+}
+
+.status{
+    margin-top:12px;
+    font-weight:bold;
+    color:#60a5fa;
+}
+
+.counter{
+    margin-top:10px;
+    color:#facc15;
+}
+
+.cab{
+    font-size:38px;
+    animation:move 4s infinite;
+}
+
+@keyframes move{
+    0%{transform:translateX(-30px);}
+    50%{transform:translateX(30px);}
+    100%{transform:translateX(-30px);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🚕 Cab Allocation System</h1>
+
+<div class="cab">🚕</div>
+
+<input type="text" id="name" placeholder="Enter Customer Name">
+
+<br>
+
+<button onclick="requestCab()">Request Cab</button>
+<button onclick="allocateCab()">Allocate Cab</button>
+
+<div class="counter">
+Waiting Customers: <span id="count">0</span>
+</div>
+
+<h3>Queue</h3>
+<ul id="queue"></ul>
+
+<div id="status" class="status">System Ready ✅</div>
+
+</div>
+
+<script>
+
+let queue=[];
+
+function requestCab(){
+    let name=document.getElementById("name").value;
+
+    if(name===""){
+        updateStatus("Enter customer name!");
+        return;
+    }
+
+    queue.push(name);
+    updateStatus(name+" added successfully");
+    document.getElementById("name").value="";
+    displayQueue();
+}
+
+function allocateCab(){
+    if(queue.length===0){
+        updateStatus("No Pending Requests");
+        return;
+    }
+
+    let customer=queue.shift();
+    updateStatus("Cab Allocated to "+customer+" 🚕");
+    displayQueue();
+}
+
+function displayQueue(){
+    let list=document.getElementById("queue");
+    list.innerHTML="";
+
+    queue.forEach(c=>{
+        let li=document.createElement("li");
+        li.textContent=c;
+        list.appendChild(li);
+    });
+
+    document.getElementById("count").textContent=queue.length;
+}
+
+function updateStatus(msg){
+    document.getElementById("status").textContent=msg;
+}
+
+</script>
+
+</body>
+</html>
